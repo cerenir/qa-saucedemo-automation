@@ -6,34 +6,28 @@ export default defineConfig({
   testDir: './tests',
   fullyParallel: true,
   forbidOnly: !!process.env.CI,
-  retries: process.env.CI ? 2 : 0, // Reintenta en CI para evitar falsos negativos
+  retries: process.env.CI ? 2 : 0, 
   workers: process.env.CI ? 1 : undefined,
   reporter: 'html',
   use: {
-    baseURL: 'https://www.google.com', // Cambiarás esto en cada proyecto
-    trace: 'on-first-retry',           // Te permite ver qué pasó paso a paso si falla
-    screenshot: 'only-on-failure',     // Evita llenar el disco, solo captura errores
-    video: 'retain-on-failure',        // Muy útil para depurar en GitHub Actions
+    // Ponemos la URL de Sauce Demo aquí para centralizarla
+    baseURL: 'https://www.saucedemo.com', 
+    trace: 'on-first-retry',           
+    screenshot: 'only-on-failure',     
+    video: 'retain-on-failure',        
   },
   projects: [
     {
-      name: 'setup',
-      testMatch: 'auth.setup.ts',
-    },
-    {
       name: 'chromium',
-      use: { ...devices['Desktop Chrome'], storageState: 'playwright/.auth/user.json' },
-      dependencies: ['setup'],
+      use: { ...devices['Desktop Chrome'] }, // Limpio de dependencias y storageState
     },
     {
       name: 'firefox',
-      use: { ...devices['Desktop Firefox'], storageState: 'playwright/.auth/user.json' },
-      dependencies: ['setup'],
+      use: { ...devices['Desktop Firefox'] }, // Limpio
     },
     {
       name: 'webkit',
-      use: { ...devices['Desktop Safari'], storageState: 'playwright/.auth/user.json' },
-      dependencies: ['setup'],
+      use: { ...devices['Desktop Safari'] }, // Limpio
     },
   ],
 });
