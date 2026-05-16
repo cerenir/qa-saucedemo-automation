@@ -10,7 +10,6 @@ export default defineConfig({
   workers: process.env.CI ? 1 : undefined,
   reporter: 'html',
   use: {
-    // Ponemos la URL de Sauce Demo aquí para centralizarla
     baseURL: 'https://www.saucedemo.com', 
     trace: 'on-first-retry',           
     screenshot: 'only-on-failure',     
@@ -18,16 +17,27 @@ export default defineConfig({
   },
   projects: [
     {
-      name: 'chromium',
-      use: { ...devices['Desktop Chrome'] }, // Limpio de dependencias y storageState
+      name: 'ui-chromium',
+      testMatch: /.*tests\/ui\/.*\.spec\.ts/,
+      use: { ...devices['Desktop Chrome'] },
     },
     {
-      name: 'firefox',
-      use: { ...devices['Desktop Firefox'] }, // Limpio
+      name: 'ui-firefox',
+      testMatch: /.*tests\/ui\/.*\.spec\.ts/,
+      use: { ...devices['Desktop Firefox'] },
     },
     {
-      name: 'webkit',
-      use: { ...devices['Desktop Safari'] }, // Limpio
+      name: 'ui-webkit',
+      testMatch: /.*tests\/ui\/.*\.spec\.ts/,
+      use: { ...devices['Desktop Safari'] },
+    },
+    {
+      name: 'api-tests',
+      testMatch: /.*tests\/api\/.*\.spec\.ts/,
+      use: {
+        // Ponemos la URL base de la nueva API aquí
+        baseURL: 'https://jsonplaceholder.typicode.com', 
+      },
     },
   ],
 });

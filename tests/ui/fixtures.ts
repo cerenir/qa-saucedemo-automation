@@ -1,5 +1,5 @@
 import { test as base, Page } from '@playwright/test'; // 1. Importamos 'Page'
-import { LoginPage } from '../page-objects/LoginPage';
+import { LoginPage } from '../../page-objects/LoginPage';
 
 // 1. Definimos qué "servicios" nuevos va a tener nuestro test
 type MyFixtures = {
