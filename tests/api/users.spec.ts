@@ -24,5 +24,5 @@ test.describe('Pruebas de API - Gestión de Posts', () => {
     const body = await response.json();
     expect(body.title).toBe('Mi primer test de API');
   });
-
+//esto es un comentario para probar con ramas en source tree
 });
