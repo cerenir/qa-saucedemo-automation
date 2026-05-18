@@ -53,7 +53,7 @@ test.describe('Flujos del proceso de Checkout', () => {
     const checkoutPage = new CheckoutPage(loggedPage);
 
     await checkoutPage.fillCustomerInformation('Carlos', 'Rius', '');
-    await expect(checkoutPage.errorHeader).toHaveText('Error: Postal Code is require');
+    await expect(checkoutPage.errorHeader).toHaveText('Error: Postal Code is required');
     
   });
 });
