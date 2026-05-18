@@ -2,5 +2,9 @@ node_modules/
 test-results/
 playwright-report/
 blob-report/
-playwright/.cache/
+playwright/.local-browsers/.cache/
 .env
+.env.*
+!.env.example
+.DS_Store
+.vscode/

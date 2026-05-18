@@ -6,17 +6,22 @@ import { CheckoutPage } from '../../page-objects/CheckoutPage';
 // Agrupamos todos los tests relacionados con el proceso de compra
 test.describe('Flujos del proceso de Checkout', () => {
 
-  test('Debería completar la compra exitosamente', async ({ loggedPage }) => {
-
+  test.beforeEach(async ({ loggedPage }) => {
     const inventoryPage = new InventoryPage(loggedPage);
     const cartPage = new CartPage(loggedPage);
-    const checkoutPage = new CheckoutPage(loggedPage);
 
+    // Agregamos un producto al carrito y vamos a la página de checkout antes de cada test
     await inventoryPage.addItemToCart('sauce-labs-bike-light');
     await inventoryPage.goToCart();
-
     await expect(cartPage.getCartItemTitle()).toHaveText('Sauce Labs Bike Light');  
     await cartPage.goToCheckout();
+
+  });
+
+  test('Debería completar la compra exitosamente', async ({ loggedPage }) => {
+
+    const checkoutPage = new CheckoutPage(loggedPage);
+    
     await checkoutPage.fillCustomerInformation('Carlos', 'Rius', '08001');
     await checkoutPage.finishOrder();
 
@@ -30,14 +35,7 @@ test.describe('Flujos del proceso de Checkout', () => {
     const cartPage = new CartPage(loggedPage);
     const checkoutPage = new CheckoutPage(loggedPage);
 
-    await inventoryPage.addItemToCart('sauce-labs-bike-light');
-    await inventoryPage.goToCart();
-
-    await expect(cartPage.getCartItemTitle()).toHaveText('Sauce Labs Bike Light');  
-    await cartPage.goToCheckout();
     await checkoutPage.fillCustomerInformation('', 'Rius', '08001');
-    
-    // Validamos que el pedido se ha completado correctamente
     await expect(checkoutPage.errorHeader).toHaveText('Error: First Name is required');
     
   });
@@ -46,31 +44,16 @@ test.describe('Flujos del proceso de Checkout', () => {
     const cartPage = new CartPage(loggedPage);
     const checkoutPage = new CheckoutPage(loggedPage);
 
-    await inventoryPage.addItemToCart('sauce-labs-bike-light');
-    await inventoryPage.goToCart();
-
-    await expect(cartPage.getCartItemTitle()).toHaveText('Sauce Labs Bike Light');  
-    await cartPage.goToCheckout();
     await checkoutPage.fillCustomerInformation('Carlos', '', '08001');
-    
-    // Validamos que el pedido se ha completado correctamente
     await expect(checkoutPage.errorHeader).toHaveText('Error: Last Name is required');
     
   });
   test('Debería mostrar error si el campo código postal del formulario está vacío', async ({ loggedPage }) => {
-    const inventoryPage = new InventoryPage(loggedPage);
-    const cartPage = new CartPage(loggedPage);
+   
     const checkoutPage = new CheckoutPage(loggedPage);
 
-    await inventoryPage.addItemToCart('sauce-labs-bike-light');
-    await inventoryPage.goToCart();
-
-    await expect(cartPage.getCartItemTitle()).toHaveText('Sauce Labs Bike Light');  
-    await cartPage.goToCheckout();
     await checkoutPage.fillCustomerInformation('Carlos', 'Rius', '');
-    
-    // Validamos que el pedido se ha completado correctamente
-    await expect(checkoutPage.errorHeader).toHaveText('Error: Postal Code is required');
+    await expect(checkoutPage.errorHeader).toHaveText('Error: Postal Code is require');
     
   });
 });
