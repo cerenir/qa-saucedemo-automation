@@ -2,6 +2,7 @@ import { test, expect } from './fixtures';
 import { InventoryPage } from '../../page-objects/InventoryPage'; // Asegúrate de ajustar la ruta
 import { CartPage } from '../../page-objects/CartPage';
 import { CheckoutPage } from '../../page-objects/CheckoutPage';
+import { faker } from '@faker-js/faker';
 
 // Agrupamos todos los tests relacionados con el proceso de compra
 test.describe('Flujos del proceso de Checkout', () => {
@@ -35,7 +36,7 @@ test.describe('Flujos del proceso de Checkout', () => {
     const cartPage = new CartPage(loggedPage);
     const checkoutPage = new CheckoutPage(loggedPage);
 
-    await checkoutPage.fillCustomerInformation('', 'Rius', '08001');
+    await checkoutPage.fillCustomerInformation('', faker.person.lastName(), '08001');
     await expect(checkoutPage.errorHeader).toHaveText('Error: First Name is required');
     
   });
@@ -44,7 +45,7 @@ test.describe('Flujos del proceso de Checkout', () => {
     const cartPage = new CartPage(loggedPage);
     const checkoutPage = new CheckoutPage(loggedPage);
 
-    await checkoutPage.fillCustomerInformation('Carlos', '', '08001');
+    await checkoutPage.fillCustomerInformation(faker.person.firstName(), '', faker.location.zipCode()); // Usamos faker para generar un código postal válido
     await expect(checkoutPage.errorHeader).toHaveText('Error: Last Name is required');
     
   });
@@ -52,7 +53,7 @@ test.describe('Flujos del proceso de Checkout', () => {
    
     const checkoutPage = new CheckoutPage(loggedPage);
 
-    await checkoutPage.fillCustomerInformation('Carlos', 'Rius', '');
+    await checkoutPage.fillCustomerInformation(faker.person.firstName(), faker.person.lastName(), '');
     await expect(checkoutPage.errorHeader).toHaveText('Error: Postal Code is required');
     
   });
