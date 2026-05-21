@@ -2,13 +2,30 @@
   "name": "playwrighttypescript",
   "version": "1.0.0",
   "main": "index.js",
-  "scripts": {
-    "test": "playwright test",
-    "test:chrome": "playwright test --project=ui-chromium",
-    "test:chrome:headed": "playwright test --project=ui-chromium --headed",
+"scripts": {
+    "test:all": "playwright test",
     "test:api": "playwright test --project=api-tests",
+    "report": "playwright show-report",
     "test:debug": "playwright test --debug",
-    "report": "playwright show-report"
+    
+    "// --- SCRIPTS DE CHROMIUM ---": "",
+    "test:chrome": "playwright test --project=ui-chromium",
+    "test:chrome:visual": "playwright test --project=ui-chromium --headed",
+    "test:chrome:criticos": "playwright test --project=ui-chromium --grep @critico",
+    
+    "// --- SCRIPTS DE FIREFOX ---": "",
+    "test:firefox": "playwright test --project=ui-firefox",
+    "test:firefox:visual": "playwright test --project=ui-firefox --headed",
+    "test:firefox:criticos": "playwright test --project=ui-firefox --grep @critico",
+    
+    "// --- SCRIPTS DE SAFARI (WEBKIT) ---": "",
+    "test:safari": "playwright test --project=ui-webkit",
+    "test:safari:visual": "playwright test --project=ui-webkit --headed",
+    "test:safari:criticos": "playwright test --project=ui-webkit --grep @critico",
+
+    "// --- SCRIPTS GLOBALES POR TAGS ---": "",
+    "test:criticos": "playwright test --grep @critico",
+    "test:secundarios": "playwright test --grep @secundario"
   },
   "keywords": [],
   "author": "",

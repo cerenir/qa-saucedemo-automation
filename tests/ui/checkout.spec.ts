@@ -5,7 +5,7 @@ import { CheckoutPage } from '../../page-objects/CheckoutPage';
 import { faker } from '@faker-js/faker';
 
 // Agrupamos todos los tests relacionados con el proceso de compra
-test.describe('Flujos del proceso de Checkout', () => {
+test.describe('Flujos del proceso de Checkout', {tag: '@smoke'}, () => {
 
   test.beforeEach(async ({ loggedPage }) => {
     const inventoryPage = new InventoryPage(loggedPage);
@@ -31,6 +31,7 @@ test.describe('Flujos del proceso de Checkout', () => {
     await expect(checkoutPage.successImage).toBeVisible();
 
   });
+   
   test('Debería mostrar error si el campo nombre del formulario está vacío', async ({ loggedPage }) => {
     const inventoryPage = new InventoryPage(loggedPage);
     const cartPage = new CartPage(loggedPage);
@@ -57,4 +58,24 @@ test.describe('Flujos del proceso de Checkout', () => {
     await expect(checkoutPage.errorHeader).toHaveText('Error: Postal Code is required');
     
   });
+  
+});
+
+test.describe('Flujos de validaciones de listado de productos', () => {
+
+   test('Debería actualizar el contador de carrito dinámicamente al añadir un producto al carrito', async ({ loggedPage }) => {
+
+    const inventoryPage = new InventoryPage(loggedPage);
+    await expect(inventoryPage.cartBadge).toBeHidden();
+    const randomProduct = await inventoryPage.addRandomItemToCart();
+    console.log(`🧪 El producto elegido aleatoriamente fue: ${randomProduct}`);
+    await expect(inventoryPage.cartBadge).toBeVisible();
+    await expect(inventoryPage.cartBadge).toHaveText('1');
+   
+    await inventoryPage.removeItemFromCart(randomProduct);
+    await expect(inventoryPage.cartBadge).toBeHidden();
+
+  });
+
+  
 });

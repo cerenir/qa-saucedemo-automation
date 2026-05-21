@@ -4,6 +4,11 @@ on:
     branches: [ main, master ]
   pull_request:
     branches: [ main, master ]
+    
+  # 1. LA MAGIA PERIÓDICA AQUÍ:
+  schedule:
+    # Se ejecutará de lunes a viernes a las 02:00 AM (Hora UTC)
+    - cron: '0 2 * * 1-5'
 jobs:
   test:
     timeout-minutes: 60
