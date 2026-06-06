@@ -31,7 +31,7 @@ test.describe('Flujos del proceso de Checkout', {tag: '@smoke'}, () => {
     await expect(checkoutPage.successImage).toBeVisible();
 
   });
-   
+
   test('Debería mostrar error si el campo nombre del formulario está vacío', async ({ loggedPage }) => {
     const inventoryPage = new InventoryPage(loggedPage);
     const cartPage = new CartPage(loggedPage);
@@ -77,5 +77,31 @@ test.describe('Flujos de validaciones de listado de productos', () => {
 
   });
 
-  
+  test('Debería actualizar el contador del carrito al añadir y eliminar varios productos secuencialmente', async ({ loggedPage }) => {
+    const inventoryPage = new InventoryPage(loggedPage);
+    
+    // Lista de productos
+    const products = ['sauce-labs-backpack', 'sauce-labs-bike-light', 'sauce-labs-bolt-t-shirt'];
+    
+    // 1. Añadir productos y verificar incremento
+    for (const [index, product] of products.entries()) {
+      await inventoryPage.addItemToCart(product);
+      await expect(inventoryPage.cartBadge).toHaveText((index + 1).toString());
+    }
+
+    // 2. Eliminar productos y verificar decremento
+    // Invertimos la lista para eliminar en orden inverso
+    const productsToRemove = [...products].reverse();
+    for (const [index, product] of productsToRemove.entries()) {
+      await inventoryPage.removeItemFromCart(product);
+      
+      const remainingCount = productsToRemove.length - 1 - index;
+      if (remainingCount > 0) {
+        await expect(inventoryPage.cartBadge).toHaveText(remainingCount.toString());
+      } else {
+        await expect(inventoryPage.cartBadge).toBeHidden();
+      }
+    }
+  });
+
 });

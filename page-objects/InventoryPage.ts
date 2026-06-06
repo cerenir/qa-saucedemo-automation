@@ -5,12 +5,18 @@ export class InventoryPage {
   readonly cartLink: Locator;
   readonly cartBadge: Locator;
   readonly addToCartButtons: Locator;
+  readonly sortDropdown: Locator;
+  readonly inventoryList: Locator;
+  readonly inventoryItems: Locator;
 
   constructor(page: Page) {
     this.page = page;
     this.cartLink = page.locator('[data-test="shopping-cart-link"]');
     this.cartBadge = page.locator('[data-test="shopping-cart-badge"]');
     this.addToCartButtons = page.locator('button[data-test^="add-to-cart-"]');
+    this.sortDropdown = page.locator('[data-test="product-sort-container"]');
+    this.inventoryList = page.locator('[data-test="inventory-list"]');
+    this.inventoryItems = page.locator('[data-test="inventory-item"]');
   }
 
   // Usamos un método dinámico para poder añadir CUALQUIER producto pasando su ID por parámetro
