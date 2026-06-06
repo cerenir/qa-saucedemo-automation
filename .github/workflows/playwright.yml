@@ -9,23 +9,49 @@ on:
   schedule:
     # Se ejecutará de lunes a viernes a las 02:00 AM (Hora UTC)
     - cron: '0 2 * * 1-5'
-    # Te da un botón en la web de GitHub para lanzar el test a mano cuando quieras
+  
+  # Te da un botón en la web de GitHub para lanzar el test a mano cuando quieras
   workflow_dispatch:
+
 jobs:
   test:
-    timeout-minutes: 60
+    # Bajamos el límite a 10 minutos. Si algo se congela, muere rápido y no te consume horas.
+    timeout-minutes: 10
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4
+    
     - uses: actions/setup-node@v4
       with:
         node-version: lts/*
+
     - name: Install dependencies
       run: npm ci
-    - name: Install Playwright Browsers
+
+    # 2. NUEVA MAGIA: Guardar los navegadores en caché para evitar la descarga pesada que se cuelga
+    - name: Cache Playwright Browsers
+      id: playwright-cache
+      uses: actions/cache@v4
+      with:
+        path: ~/.cache/ms-playwright
+        # Usa el package-lock.json como clave; si cambias de versión de Playwright en el package.json, la caché se vacía sola
+        key: ${{ runner.os }}-playwright-${{ hashFiles('**/package-lock.json') }}
+        restore-keys: |
+          ${{ runner.os }}-playwright-
+
+    # Si NO están en caché, los descargamos de cero con sus dependencias del sistema
+    - name: Install Playwright Browsers (Fresh Install)
+      if: steps.playwright-cache.outputs.cache-hit != 'true'
       run: npx playwright install --with-deps
+
+    # Si SÍ están en caché, solo instalamos las dependencias del sistema operativo (es instantáneo)
+    - name: Install Playwright OS Dependencies (Cache Hit)
+      if: steps.playwright-cache.outputs.cache-hit == 'true'
+      run: npx playwright install-deps
+
     - name: Run Playwright tests
       run: npx playwright test
+
     - uses: actions/upload-artifact@v4
       if: ${{ !cancelled() }}
       with:
