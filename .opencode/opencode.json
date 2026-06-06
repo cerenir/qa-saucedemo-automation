@@ -3,13 +3,15 @@
   "mcp": {
     "playwright": {
       "type": "local",
-      "command": ["npx", "-y", "@playwright/mcp"],
+      "command": "npx",
+      "args": ["-y", "@playwright/mcp"],
       "enabled": true,
       "env": { "BROWSER": "chromium" }
     },
     "axe": {
       "type": "local",
-      "command": ["npx", "-y", "@axe-core/mcp"],
+      "command": "npx",
+      "args": ["-y", "@axe-core/mcp"],
       "enabled": true
     }
   }
