@@ -1,0 +1,10 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    
+    // 💥 REVISA O AÑADE ESTA LÍNEA AQUÍ DENTRO:
+    "types": ["node", "@playwright/test"]
+  }
+}

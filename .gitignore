@@ -8,3 +8,4 @@ playwright/.local-browsers/.cache/
 !.env.example
 .DS_Store
 .vscode/
+.env
