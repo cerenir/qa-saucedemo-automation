@@ -20,16 +20,24 @@ test.describe('Flujos del proceso de Checkout', {tag: '@smoke'}, () => {
   });
 
   test('Debería completar la compra exitosamente', async ({ loggedPage }) => {
-
     const checkoutPage = new CheckoutPage(loggedPage);
     
+    // 1. Llegamos a la pantalla de Overview
     await checkoutPage.fillCustomerInformation('Carlos', 'Rius', '08001');
+    
+    // 2. Extraemos los números resolviendo las promesas en orden
+    const subtotalCalculado = await checkoutPage.obtenerSubtotalCalculado();
+    const subtotalPantalla = await checkoutPage.obtenerSubtotalDePantalla();
+    
+    // 3. Aserción matemática estricta para decimales
+    expect(subtotalCalculado).toBeCloseTo(subtotalPantalla, 2);
+    
+    // 4. Usamos tu método encapsulado
     await checkoutPage.finishOrder();
 
-    // Validamos que el pedido se ha completado correctamente
+    // 5. Verificaciones finales de UI
     await expect(checkoutPage.successHeader).toHaveText('Thank you for your order!');
     await expect(checkoutPage.successImage).toBeVisible();
-
   });
 
   test('Debería mostrar error si el campo nombre del formulario está vacío', async ({ loggedPage }) => {
@@ -102,6 +110,12 @@ test.describe('Flujos de validaciones de listado de productos', () => {
         await expect(inventoryPage.cartBadge).toBeHidden();
       }
     }
+  });
+
+  test('Debería haber 6 productos en total en la página de inventario', async ({loggedPage}) => {
+    const inventoryPage = new InventoryPage(loggedPage);
+    const totalProducts = await inventoryPage.countProductCards()
+    expect(totalProducts).toBe(6);
   });
 
 });

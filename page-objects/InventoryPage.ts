@@ -46,4 +46,7 @@ export class InventoryPage {
   async goToCart() {
     await this.cartLink.click();
   }
+  async countProductCards(): Promise<number>{
+    return await this.inventoryItems.count();
+  }
 }
