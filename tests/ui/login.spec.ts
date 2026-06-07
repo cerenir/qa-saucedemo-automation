@@ -31,4 +31,18 @@ test.describe('Flujo de Autenticación', () => {
     await loginPage.logout();
     await expect(page).toHaveURL(/saucedemo.com/);
   })
+  test('Debería aparecer mensaje de error si el campo username está vacío', async({page}) =>{
+    const loginPage = new LoginPage(page);
+    await loginPage.goto();
+    await loginPage.login('', 'secret_sauce');
+    await expect(loginPage.errorMessage).toBeVisible();
+    await expect(loginPage.errorMessage).toContainText('Epic sadface: Username is required');
+  })
+  test('Debería aparecer mensaje de error si el campo password está vacío', async({page}) =>{
+    const loginPage = new LoginPage(page);
+    await loginPage.goto();
+    await loginPage.login('standard_user', '');
+    await expect(loginPage.errorMessage).toBeVisible();
+    await expect(loginPage.errorMessage).toContainText('Epic sadface: Password is required');
+  })
 });
