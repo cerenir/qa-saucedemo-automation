@@ -20,7 +20,6 @@ export class CheckoutPage {
     this.continueButton = page.locator('[data-test="continue"]');
     this.finishButton = page.locator('[data-test="finish"]');
     this.cancelButton = page.locator('[data-test="cancel"]');
-    // Guardamos los localizadores para las validaciones del final
     this.successHeader = page.locator('[data-test="complete-header"]');
     this.errorHeader = page.locator('[data-test="error"]');
     this.successImage = page.locator('[data-test="pony-express"]');

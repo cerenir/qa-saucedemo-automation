@@ -14,10 +14,10 @@ export class CartPage {
   }
 
   async continueShopping() {
-    await this.page.getByText('Continue ShoppingCheckout').click();
+    //await this.page.getByText('Continue ShoppingCheckout').click();
+    await this.page.getByRole('button', { name: 'continue-shopping' }).click();
   }
 
-  
 
   async removeItemFromCart(productName: string) {
     const removeButton = this.page.locator(`[data-test="remove-${productName}"]`);

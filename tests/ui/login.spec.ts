@@ -23,5 +23,12 @@ test.describe('Flujo de Autenticación', () => {
     await expect(loginPage.errorMessage).toBeVisible();
     await expect(loginPage.errorMessage).toContainText('Epic sadface');
   });
+  test('Debería salir de la sesion correctamente al pulsar en Logout', async({ page}) =>{
+    const loginPage = new LoginPage(page);
+    await loginPage.goto();
+    await loginPage.login('standard_user', 'secret_sauce');
 
+    await loginPage.logout();
+    await expect(page).toHaveURL(/saucedemo.com/);
+  })
 });
