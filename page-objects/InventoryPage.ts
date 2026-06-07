@@ -59,6 +59,6 @@ export class InventoryPage {
     return priceTexts.map(price => parseFloat(price.replace('$', '')));
   }
   async getAllProductsTittles(): Promise<string[]>{
-    return await this.page.locator('.inventory_item_name').allTextContents(); ;
+    return await this.page.locator('.inventory_item_name').allTextContents();
   }
 }
