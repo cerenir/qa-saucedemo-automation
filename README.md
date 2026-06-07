@@ -17,3 +17,4 @@ Este es mi template profesional para proyectos de QA Automation.
 - Ejecutar tests: `npx playwright test`
 - Ver reporte: `npx playwright show-report`
 - Ejecutar en modo UI: `npx playwright test --ui`
+- Ejecutar en modo grabador para generar código: `npx playwright codegen`
