@@ -123,10 +123,43 @@ test('Debería mantener la consistencia del carrito al navegar hacia atrás en e
     await inventoryPage.addItemToCart(productoTest);
     await inventoryPage.goToCart();
     await loggedPage.goBack();
-    
+
     await expect(inventoryPage.cartBadge).toHaveText('1');
 
     await inventoryPage.goToCart();
     await expect(cartPage.getCartItemTitle()).toHaveText(textoEsperado);
   });
+
+  test('Debería ordenar correctamente los productos por precio de menor a mayor ', async ({ loggedPage }) => {
+    const inventoryPage = new InventoryPage(loggedPage);
+    await inventoryPage.selectSortingOption('lohi');
+    const preciosPantalla = await inventoryPage.getAllProductPrices();
+    
+    for(let i = 0; i < preciosPantalla.length -1; i++){
+      expect(preciosPantalla[i]).toBeLessThanOrEqual(preciosPantalla[i+1]);
+    }
+  });
+
+   test('Debería ordenar correctamente los productos por precio de mayor a menor ', async ({ loggedPage }) => {
+    const inventoryPage = new InventoryPage(loggedPage);
+    await inventoryPage.selectSortingOption('hilo');
+    const preciosPantalla = await inventoryPage.getAllProductPrices();
+    
+    for(let i = 0; i < preciosPantalla.length -1; i++){
+      expect(preciosPantalla[i]).toBeGreaterThanOrEqual(preciosPantalla[i+1]);
+    }
+  });
+
+  test('Debería ordenar correctamente los productos de A a Z ', async ({ loggedPage }) => {
+    const inventoryPage = new InventoryPage(loggedPage);
+    await inventoryPage.selectSortingOption('az');
+    const screenNames = await inventoryPage.getAllProductsTittles();
+    
+    for(let i = 0; i < screenNames.length -1; i++){
+      const comparacion = screenNames[i].localeCompare(screenNames[i+1]);
+      expect(comparacion).toBeLessThanOrEqual(0);
+    }
+  });
+
+
 });
